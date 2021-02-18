@@ -1,7 +1,8 @@
 from numba.core import types
 from numba.typed import Dict, List
 from numba import njit
-from parsing.util import hash_backward
+from parsing.util import hash_backward, hash_forward
+import config
 
 
 @njit
@@ -40,6 +41,7 @@ def fill_outside_base(outside, inside, N, pi):
             continue
         outside[0][N-1][nonterm] = prob
 
+# @njit(parallel=True,
 @njit
 def fill_outside(outside, inside, N, r3, r3_lookupC):
     for length in range(N - 1, 0, -1):
@@ -82,6 +84,7 @@ def fill_outside(outside, inside, N, r3, r3_lookupC):
                         else:
                             outside[i][j][b] += res
 
+# @njit(parallel=True,
 @njit
 def fill_marginal(marginal, inside, outside, prune_cutoff, N):
     tree_score = 0
@@ -168,3 +171,4 @@ def prune(terminals, r3, r1, pi, r3_lookupC, r1_lookup, prune_cutoff):
     fill_outside(outside, inside, N, r3, r3_lookupC)
     fill_marginal(marginal, inside, outside, prune_cutoff, N)
     return marginal
+    # return get_parse_chart(marginal, N, r3_lookupC)

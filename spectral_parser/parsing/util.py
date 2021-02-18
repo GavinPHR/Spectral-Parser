@@ -16,32 +16,47 @@ def hash_backward(h):
     a = (h >> 40) & mask
     return (a, b, c)
 
+@njit
+def Tj(T2ij, T1j):
+    ans = np.zeros(T2ij.shape[0])
+    for i in range(T2ij.shape[0]):
+        for j in range(T2ij.shape[1]):
+            ans[i] += T2ij[i][j] * T1j[j]
+    return ans
 
 @njit
-def Tjk(a, b, c, T1j, T1k):
-    ans = np.zeros(len(a))
-    for i in range(len(a)):
-        for j in range(len(b)):
-            for k in range(len(c)):
-                ans[i] += a[i] * b[j] * c[k] * T1j[j] * T1k[k]
+def Ti(T2ij, T1i):
+    ans = np.zeros(T2ij.shape[1])
+    for j in range(T2ij.shape[1]):
+        for i in range(T2ij.shape[0]):
+            ans[j] += T2ij[i][j] * T1i[i]
+    return ans
+
+@njit
+def Tjk(T3ijk, T1j, T1k):
+    ans = np.zeros(T3ijk.shape[0])
+    for i in range(T3ijk.shape[0]):
+        for j in range(T3ijk.shape[1]):
+            for k in range(T3ijk.shape[2]):
+                ans[i] += T3ijk[i][j][k] * T1j[j] * T1k[k]
     return ans
 
 
 @njit
-def Tij(a, b, c, T1i, T1j):
-    ans = np.zeros(len(c))
-    for k in range(len(c)):
-        for i in range(len(a)):
-            for j in range(len(b)):
-                ans[k] += a[i] * b[j] * c[k] * T1i[i] * T1j[j]
+def Tij(T3ijk, T1i, T1j):
+    ans = np.zeros(T3ijk.shape[2])
+    for k in range(T3ijk.shape[2]):
+        for i in range(T3ijk.shape[0]):
+            for j in range(T3ijk.shape[1]):
+                ans[k] += T3ijk[i][j][k] * T1i[i] * T1j[j]
     return ans
 
 
 @njit
-def Tik(a, b, c, T1i, T1k):
-    ans = np.zeros(len(b))
-    for j in range(len(b)):
-        for i in range(len(a)):
-            for k in range(len(c)):
-                ans[j] += a[i] * b[j] * c[k] * T1i[i] * T1k[k]
+def Tik(T3ijk, T1i, T1k):
+    ans = np.zeros(T3ijk.shape[1])
+    for j in range(T3ijk.shape[1]):
+        for i in range(T3ijk.shape[0]):
+            for k in range(T3ijk.shape[2]):
+                ans[j] += T3ijk[i][j][k] * T1i[i] * T1k[k]
     return ans

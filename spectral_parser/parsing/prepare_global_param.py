@@ -6,10 +6,21 @@ import numba
 
 numba.config.THREADING_LAYER = 'safe'
 
-def to_typed_dict_nt_array(untyped_d):
-    typed_d = Dict.empty(key_type=types.int64, value_type=types.float64[:, :])
-    for nt, array in untyped_d.items():
-        typed_d[nt] = array.astype(np.float64)
+def to_typed_dict_rule_tensor(untyped_d, dimension, pi=False):
+    if dimension == 1:
+        t = types.float64[:]
+    elif dimension == 2:
+        t = types.float64[:, :]
+    elif dimension == 3:
+        t = types.float64[:, :, :]
+    typed_d = Dict.empty(key_type=types.int64, value_type=t)
+    if pi:
+        for nonterm, tensor, in untyped_d.items():
+            typed_d[nonterm] = tensor.astype(np.float64)
+    else:
+        for rule, tensor in untyped_d.items():
+            assert (hash(rule) not in typed_d)
+            typed_d[hash(rule)] = tensor.astype(np.float64)
     return typed_d
 
 def to_typed_dict_nonterm_rules(untyped_d):
@@ -30,13 +41,18 @@ def to_typed_dict_rule_float(untyped_d, pi=False):
             typed_d[hash(rule)] = prob
     return typed_d
 
+# Boolean as dummy values
+# config.pos_tags = Dict.empty(key_type=types.int64, value_type=types.boolean)
+# for rule in config.rule1s_full:
+#     config.pos_tags[rule.a] = False
 
-config.rule3s = to_typed_dict_rule_float(config.pcfg.rule3s)
-config.rule1s = to_typed_dict_rule_float(config.pcfg.rule1s)
-config.pi = to_typed_dict_rule_float(config.pcfg.pi)
+config.rule3s_full = to_typed_dict_rule_tensor(config.lpcfg.rule3s, 3)
+config.rule1s_full = to_typed_dict_rule_tensor(config.lpcfg.rule1s, 1)
+config.pi_full = to_typed_dict_rule_tensor(config.lpcfg.pi, 1, pi=True)
 
-config.I = to_typed_dict_nt_array(config.I)
-config.O = to_typed_dict_nt_array(config.O)
+config.rule3s_prune = to_typed_dict_rule_float(config.pcfg.rule3s)
+config.rule1s_prune = to_typed_dict_rule_float(config.pcfg.rule1s)
+config.pi_prune = to_typed_dict_rule_float(config.pcfg.pi, pi=True)
 
 config.rule3s_lookupC = to_typed_dict_nonterm_rules(config.rule3s_lookupC)
 config.rule1s_lookup = to_typed_dict_nonterm_rules(config.rule1s_lookup)

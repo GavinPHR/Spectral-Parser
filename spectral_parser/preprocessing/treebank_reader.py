@@ -2,6 +2,22 @@ from tqdm import tqdm
 from nltk.tree import ParentedTree, Tree
 import config
 
+class TraversableTree(Tree):
+
+    def postorder(self, tree=None):
+        """
+        Generate the subtrees (non-terminals) in postorder.
+        """
+        if tree is None:
+            tree = self
+        for subtree in tree:
+            if isinstance(subtree, Tree):
+                yield from self.postorder(subtree)
+        yield tree
+
+    def __hash__(self):
+        return id(self)
+
 
 class ParentedNormalTree(ParentedTree):
 
@@ -10,6 +26,9 @@ class ParentedNormalTree(ParentedTree):
         i = label.rfind('+')
         if i != -1:
             return label[i + 1:]
+        i = label.find('|')
+        if i != -1:
+            return label[:i]
         return label
 
     def postorder(self, tree=None):
@@ -34,6 +53,24 @@ class ParentedNormalTree(ParentedTree):
             if isinstance(subtree, Tree):
                 yield from self.preorder(subtree)
 
+    # @classmethod
+    # def convert(cls, tree):
+    #     """
+    #     Convert a tree between different subtypes of Tree.  ``cls`` determines
+    #     which class will be used to encode the new tree.
+    #
+    #     :type tree: Tree
+    #     :param tree: The tree that should be converted.
+    #     :return: The new Tree.
+    #     """
+    #     if isinstance(tree, Tree):
+    #         children = [cls.convert(child) for child in tree]
+    #         node = cls(tree._label, children)
+    #         node.head = tree.head
+    #         return node
+    #     else:
+    #         return tree
+
     def __hash__(self):
         return id(self)
 
@@ -48,11 +85,13 @@ def read(file):
         length = sum(1 for line in f)
     with open(file, 'r') as f:
         for line in tqdm(f, total=length, desc='Reading files'):
-            t = Tree.fromstring(line)
+            t = TraversableTree.fromstring(line)
             t = t[0]  # Remove TOP
-            t.chomsky_normal_form(factor='left', horzMarkov=0, vertMarkov=0)  # Binarization
+            # for node in t.postorder():
+            #     node.head = determineHead(node).label()
+            # chomsky_normal_form_with_head(t)
+            t.chomsky_normal_form(factor='left', horzMarkov=1, vertMarkov=0)  # Binarization
             t.collapse_unary(collapsePOS=True, collapseRoot=True)  # Collapse ALL unary rules
             t = ParentedNormalTree.convert(t)
-            lower(t)  # Lower case the terminals
             trees.append(t)
     return trees
