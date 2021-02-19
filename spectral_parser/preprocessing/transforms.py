@@ -15,8 +15,8 @@ def transform_trees(trees):
             if isinstance(node[0], str):
                 if node[0] not in tmap:
                     # replace with its POS tag
-                    tag = node.raw_label()
-                    # tag = signature(node[0], i, node[0].lower() in tmap)
+                    # tag = node.raw_label()
+                    tag = signature(node[0], i, node[0].lower() in tmap)
                     if tag in tmap:
                         node[0] = tmap[tag]
                     else:

@@ -9,6 +9,7 @@ class PCFG:
         self.nonterminals = Counter()
         self.preterminals = Counter()
         self.interminals = Counter()
+        self.terminals = Counter()
         self.rule3s_count = Counter()
         self.rule1s_count = Counter()
         self.pi = Counter()
@@ -27,6 +28,7 @@ class PCFG:
                     r = Rule3(node.label(), node[0].label(), node[1].label())
                     self.rule3s_count[r] += 1
                 elif len(node) == 1:
+                    self.terminals[node[0]] += 1
                     self.preterminals[node.label()] += 1
                     r = Rule1(node.label(), node[0])
                     self.rule1s_count[r] += 1

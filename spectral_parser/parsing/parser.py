@@ -15,7 +15,7 @@ import os
 import multiprocessing as mp
 from parsing.contrained import constrained
 import pickle
-import numpy as np
+from preprocessing.unk import signature
 from datetime import datetime
 
 def transform_int2str(tree, sent, i=0):
@@ -28,7 +28,7 @@ def transform_int2str(tree, sent, i=0):
             i = transform_int2str(subtree, sent, i)
     return i
 
-# @njit
+@njit
 def recursive_build(parse_chart, score_chart, i, j, a=-1):
     if a == -1:
         assert(i == 0 and j == len(parse_chart) - 1)
@@ -87,15 +87,21 @@ def get_charts(terminals, r3_p, r1_p, pi_p, r3_lookupC, r1_lookup, prune_cutoff,
     else:
         constrains = prune(terminals, r3_p, r1_p, pi_p, r3_lookupC, r1_lookup, prune_cutoff)
     if len(constrains[0][len(constrains) - 1]) == 0:
-        return '()'
+        sent = [config.terminal_map[x] for x in terminals]
+        terminals = []
+        for i, x in enumerate(sent):
+            count = config.pcfg.terminals[config.terminal_map[x]]
+            if 'UNK' == x[:3] or count > 50:
+                terminals.append(config.terminal_map[x])
+            else:
+                terminals.append(config.terminal_map[signature(x, i, x.lower() in config.terminal_map.term2int)])
+        constrains = prune(terminals, r3_p, r1_p, pi_p, r3_lookupC, r1_lookup, prune_cutoff)
 
     # parse_chart, score_chart = get_parse_chart(constrains, len(constrains), r3_lookupC)
     # return recursive_build(parse_chart, score_chart, 0, len(parse_chart) - 1)
 
     marginal = constrained(terminals, r3_f, r1_f, pi_f, r3_lookupC, r1_lookup, constrains)
     parse_chart, score_chart = get_parse_chart(marginal, len(marginal), r3_lookupC)
-    if len(parse_chart[0][len(parse_chart) - 1]) == 0:
-        return '()'
     return recursive_build(parse_chart, score_chart, 0, len(parse_chart) - 1)
 
 def process_wrapper(terminals):
@@ -112,20 +118,15 @@ def process_wrapper(terminals):
                         config.rule3s_full,
                         config.rule1s_full,
                         config.pi_full)
-from preprocessing.unk import signature
+
 def prepare_args(sent):
-    # uncased = [w.lower() for w in sent]
-    uncased = sent
     terminals = []
-    for i, (wordC, POS) in enumerate(tagger.tag(uncased)):
-        # word = wordC.lower()
-        word = wordC
+    for i, word in enumerate(sent):
         if word not in config.terminal_map.term2int:
             # Fall back to POS tag
-            # POS = signature(word, i, word.lower() in config.terminal_map.term2int)
+            POS = signature(word, i, word.lower() in config.terminal_map.term2int)
             if POS not in config.terminal_map.term2int:
-                terminals.append(config.terminal_map['NN'])
-                # terminals.append(config.terminal_map['UNK'])
+                terminals.append(config.terminal_map['UNK'])
             else:
                 terminals.append(config.terminal_map[POS])
         else:
@@ -145,8 +146,8 @@ def parse_devset(dev_file):
     # now = datetime.now().strftime("-%M-%H-%d-%m")
     now = ''
     with open(config.output_dir + 'parse' + now + '.txt', 'w') as f:
-        with mp.Pool(cpu - 2) as pool:
-            for i, tree_str in enumerate(tqdm(pool.imap(process_wrapper, args, chunksize=len(sents)//(cpu)), total=len(sents))):
+        with mp.Pool(1) as pool:
+            for i, tree_str in enumerate(tqdm(pool.imap(process_wrapper, args, chunksize=len(sents)//(1)), total=len(sents))):
                 if tree_str == '()':
                     f.write('()\n')
                 else:

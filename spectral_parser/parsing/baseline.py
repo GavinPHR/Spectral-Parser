@@ -171,4 +171,3 @@ def prune(terminals, r3, r1, pi, r3_lookupC, r1_lookup, prune_cutoff):
     fill_outside(outside, inside, N, r3, r3_lookupC)
     fill_marginal(marginal, inside, outside, prune_cutoff, N)
     return marginal
-    # return get_parse_chart(marginal, N, r3_lookupC)

@@ -1,6 +1,6 @@
-prefix = '/Users/phr/Desktop/Spectral-Parser2/spectral_parser'
-train_file = prefix+'/data/train.txt'
-dev_file = prefix+'/data/400.txt'
+prefix = '/Users/phr/Desktop/Spectral-Parser/spectral_parser'
+train_file = prefix+'/data/cleaned.train.txt'
+dev_file = prefix+'/data/cleaned.dev.txt'
 test_file = prefix+'/data/test.txt'
 output_dir = prefix+'/output/'
 cache = prefix+'/output/cache/'
@@ -15,9 +15,9 @@ if not os.path.exists(cache):
     print('Cache directory created.')
 import torch
 device = 'cuda:2' if torch.cuda.is_available() else 'cpu'
-max_state = 32
+max_state = 16
 embedding_map = None
-terminal_cutoff = 1
+terminal_cutoff = 5
 train = None
 nonterminal_map = None
 terminal_map = None
