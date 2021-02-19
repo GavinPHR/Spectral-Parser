@@ -96,7 +96,8 @@ def get_charts(terminals, r3_p, r1_p, pi_p, r3_lookupC, r1_lookup, prune_cutoff,
             else:
                 terminals.append(config.terminal_map[signature(x, i, x.lower() in config.terminal_map.term2int)])
         constrains = prune(terminals, r3_p, r1_p, pi_p, r3_lookupC, r1_lookup, prune_cutoff)
-
+        if len(constrains[0][len(constrains) - 1]) == 0:
+            return '()'
     # parse_chart, score_chart = get_parse_chart(constrains, len(constrains), r3_lookupC)
     # return recursive_build(parse_chart, score_chart, 0, len(parse_chart) - 1)
 
