@@ -18,6 +18,16 @@ class ParentedNormalTree(ParentedTree):
             return label[:i]
         return label
 
+    def raw_label2(self):
+        label = self.label()
+        i = label.find('|')
+        if i != -1:
+            return label[:i + 2] + '>'
+        i = label.find('^')
+        if i != -1:
+            return label[:i]
+        return label
+
     def postorder(self, tree=None):
         """
         Generate the subtrees (non-terminals) in postorder.

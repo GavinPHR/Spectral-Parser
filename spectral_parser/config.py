@@ -1,6 +1,6 @@
 prefix = '/Users/phr/Desktop/Spectral-Parser/spectral_parser'
-train_file = prefix+'/data/cleaned.train.txt'
-dev_file = prefix+'/data/cleaned.dev.txt'
+train_file = prefix+'/data/train.txt'
+dev_file = prefix+'/data/400.txt'
 test_file = prefix+'/data/test.txt'
 output_dir = prefix+'/output/'
 cache = prefix+'/output/cache/'
