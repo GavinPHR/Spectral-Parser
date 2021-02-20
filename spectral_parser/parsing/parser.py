@@ -147,8 +147,8 @@ def parse_devset(dev_file):
     # now = datetime.now().strftime("-%M-%H-%d-%m")
     now = ''
     with open(config.output_dir + 'parse' + now + '.txt', 'w') as f:
-        with mp.Pool(1) as pool:
-            for i, tree_str in enumerate(tqdm(pool.imap(process_wrapper, args, chunksize=len(sents)//(1)), total=len(sents))):
+        with mp.Pool(cpu-2) as pool:
+            for i, tree_str in enumerate(tqdm(pool.imap(process_wrapper, args, chunksize=len(sents)//(cpu)), total=len(sents))):
                 if tree_str == '()':
                     f.write('()\n')
                 else:
