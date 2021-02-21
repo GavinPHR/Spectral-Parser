@@ -2,6 +2,8 @@ import config
 from preprocessing import mappings, transforms, treebank_reader
 from training import pcfg, optimize
 
+config.max_state = 22
+config.cutoff = 0.001
 config.train = treebank_reader.read(config.train_file)
 config.nonterminal_map = mappings.NonterminalMap(config.train)
 config.terminal_map = mappings.TerminalMap(config.train, len(config.nonterminal_map))
@@ -20,8 +22,8 @@ from bayes_opt.event import Events
 
 # Parameters bounds
 pbounds = {'cutoff': (0.001, 0.1),
-           'instates': (10, 21),
-           'prestates': (10, 21),
+           'instates': (10, 22),
+           'prestates': (10, 22),
            'C': (0, 50)
            }
 

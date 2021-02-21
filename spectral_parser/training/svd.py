@@ -11,7 +11,7 @@ for nt, count in tqdm(config.pcfg.nonterminals.items(), desc='Doing SVDs'):
     u, s, vt = svds(sigma, k=min(min(sigma.shape) - 1, config.max_state))
     idx = np.argsort(s)[::-1]
     i = 1
-    while i < len(idx) and s[idx[i]] > 0.01 and i < config.max_state:
+    while i < len(idx) and s[idx[i]] > config.cutoff and i < config.max_state:
         i += 1
     idx = idx[:i]
     info.append((config.nonterminal_map[nt], i))

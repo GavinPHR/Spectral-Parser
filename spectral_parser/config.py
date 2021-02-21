@@ -17,6 +17,7 @@ if not os.path.exists(cache):
 import torch
 
 max_state = 16
+cutoff = 0.01
 C = 10
 S = None
 lpcfg_optimize = None
