@@ -43,7 +43,7 @@ optimizer.subscribe(Events.OPTIMIZATION_STEP, logger)
 # load_logs(optimizer, logs=["./logs.json"])
 
 optimizer.probe(
-    params={'incutoff': 0.01,
+    params={'cutoff': 0.01,
            'instates': 16,
            'prestates': 16,
            'C': 10}

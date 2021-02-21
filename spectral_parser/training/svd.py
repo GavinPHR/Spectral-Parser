@@ -19,4 +19,3 @@ for nt, count in tqdm(config.pcfg.nonterminals.items(), desc='Doing SVDs'):
     s = np.reciprocal(s[idx]).reshape(-1, 1)
     I[nt] = I[nt].dot(u[:, idx])
     O[nt] = O[nt].dot((s*vt[idx]).T)
-print(info)

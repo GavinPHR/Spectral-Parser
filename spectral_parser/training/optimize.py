@@ -32,7 +32,8 @@ class LPCFG_Optimize(LPCFG_Smoothed):
             config.lpcfg.rule3s[rule] = pcfg.rule3s[rule] * e
         for rule, count in pcfg.rule1s_count.items():
             config.lpcfg.rule1s[rule] = pcfg.rule1s[rule] * self.Eax[rule][:L[rule.a]]
-        config.lpcfg.pi = self.pi
+        for a, param in self.pi.items():
+            config.lpcfg.pi[a] = self.pi[a][:L[a]]
 
     @staticmethod
     def get_length(cutoff, instates, prestates):
