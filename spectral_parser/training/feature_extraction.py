@@ -9,15 +9,15 @@ from scipy.sparse import dok_matrix
 
 inverse_transform_trees(config.train)
 
-def outside(node, child, level=4):
+def outside(node, child, level=3):
     u = []
     if node.parent() and level != 1:
         u = outside(node.parent(), node, level-1)
     res = []
     if node[0] is child:
-        res.append('()' + node.raw_label2() + '(' + node[1].raw_label2() + ')')
+        res.append('()' + node.label() + '(' + node[1].label() + ')')
     else:
-        res.append('(' + node[0].raw_label2() + ')' + node.raw_label2() + '()')
+        res.append('(' + node[0].label() + ')' + node.label() + '()')
     for a in u:
         res.append(res[0] + '^' + a)
     return res
@@ -25,19 +25,19 @@ def outside(node, child, level=4):
 def inside(node):
     res = []
     if len(node) == 1:
-        res.append(node.raw_label2() + ' ' + node[0].lower())
+        res.append(node.label() + ' ' + node[0].lower())
     else:
-        res.append(node.raw_label2() + ' (' + node[0].raw_label2() + ' ' + node[1].raw_label2() + ')')
+        # res.append(node.label() + ' (' + node[0].label() + ' ' + node[1].label() + ')')
         if len(node[0]) == 1:
-            l = node[0].raw_label2() + ' ' + node[0][0].lower()
+            l = node[0].label() + ' ' + node[0][0].lower()
         else:
-            l = node[0].raw_label2() + ' (' + node[0][0].raw_label2() + ' ' + node[0][1].raw_label2() + ')'
-        res.append(node.raw_label2() + ' ((' + l + ') ' + node[1].raw_label2() + ')')
+            l = node[0].label() + ' (' + node[0][0].label() + ' ' + node[0][1].label() + ')'
+        res.append(node.label() + ' ((' + l + ') ' + node[1].label() + ')')
         if len(node[1]) == 1:
-            r = node[1].raw_label2() + ' ' + node[1][0].lower()
+            r = node[1].label() + ' ' + node[1][0].lower()
         else:
-            r = node[1].raw_label2() + ' (' + node[1][0].raw_label2() + ' ' + node[1][1].raw_label2() + ')'
-        res.append(node.raw_label2() + ' (' + node[0].raw_label2() + ' (' + r + '))')
+            r = node[1].label() + ' (' + node[1][0].label() + ' ' + node[1][1].label() + ')'
+        res.append(node.label() + ' (' + node[0].label() + ' (' + r + '))')
     return res
 
 inside_count = defaultdict(Counter)

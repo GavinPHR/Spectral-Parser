@@ -3,8 +3,6 @@ export LD_LIBRARY_PATH=~/venv/lib
 """
 import config
 config.load()
-from tagger.perceptron import PerceptronTagger
-tagger = PerceptronTagger()
 import config
 from nltk.tree import Tree
 from tqdm import tqdm
