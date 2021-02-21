@@ -88,7 +88,7 @@ def get_charts(terminals, r3_p, r1_p, pi_p, r3_lookupC, r1_lookup, prune_cutoff,
         terminals = []
         for i, x in enumerate(sent):
             count = config.pcfg.terminals[config.terminal_map[x]]
-            if 'UNK' == x[:3] or count > 50:
+            if 'UNK' == x[:3] or count > 100:
                 terminals.append(config.terminal_map[x])
             else:
                 terminals.append(config.terminal_map[signature(x, i, x.lower() in config.terminal_map.term2int)])
