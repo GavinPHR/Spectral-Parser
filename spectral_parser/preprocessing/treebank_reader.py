@@ -1,7 +1,6 @@
 from tqdm import tqdm
 from nltk.tree import ParentedTree, Tree
 import config
-from collections import Counter
 
 class ParentedNormalTree(ParentedTree):
 
@@ -79,15 +78,6 @@ def vmarkov(tree):
         stack.append((node[0], parent))
         stack.append((node[1], parent))
 
-def smooth(trees):
-    c = Counter()
-    for tree in trees:
-        for node in tree.postorder():
-            c[node.label()] += 1
-    for tree in trees:
-        for node in tree.postorder():
-            if c[node.label()] < 40:
-                node.set_label(node.raw_label2())
 
 def read(file):
     trees = []
@@ -102,5 +92,4 @@ def read(file):
             t = ParentedNormalTree.convert(t)
             vmarkov(t)
             trees.append(t)
-    smooth(trees)
     return trees

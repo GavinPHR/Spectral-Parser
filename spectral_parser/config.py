@@ -1,11 +1,10 @@
 prefix = '/Users/phr/Desktop/Spectral-Parser/spectral_parser'
 # prefix = '/afs/inf.ed.ac.uk/user/s17/s1757135/Spectral-Parser/spectral_parser'
-train_file = prefix+'/data/cleaned.train.txt'
+train_file = prefix+'/data/train.txt'
 dev_file = prefix+'/data/dev1.txt'
-test_file = prefix+'/data/test.txt'
 output_dir = prefix+'/output/'
 cache = prefix+'/output/cache/'
-tagger = prefix + '/tagger/tagger.pickle'
+
 import os
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
@@ -16,9 +15,9 @@ if not os.path.exists(cache):
     print('Cache directory created.')
 import torch
 
-max_state = 16
-cutoff = 0
-C = 10
+prestates = 16
+instates = 13
+C = 12.2
 S = None
 lpcfg_optimize = None
 embedding_map = None

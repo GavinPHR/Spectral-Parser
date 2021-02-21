@@ -8,10 +8,14 @@ I, O = config.I, config.O
 info = []
 for nt, count in tqdm(config.pcfg.nonterminals.items(), desc='Doing SVDs'):
     sigma = I[nt].T.dot(O[nt]) / config.pcfg.nonterminals[nt]
-    u, s, vt = svds(sigma, k=min(min(sigma.shape) - 1, config.max_state))
+    if nt in config.pcfg.preterminals:
+        state = config.prestates
+    else:
+        state = config.instates
+    u, s, vt = svds(sigma, k=min(min(sigma.shape) - 1, state))
     idx = np.argsort(s)[::-1]
     i = 1
-    while i < len(idx) and s[idx[i]] > config.cutoff and i < config.max_state:
+    while i < len(idx) and s[idx[i]] > 0 and i < state:
         i += 1
     idx = idx[:i]
     info.append((config.nonterminal_map[nt], i))
