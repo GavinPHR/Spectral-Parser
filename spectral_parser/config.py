@@ -1,6 +1,6 @@
 prefix = '/Users/phr/Desktop/Spectral-Parser/spectral_parser'
 # prefix = '/afs/inf.ed.ac.uk/user/s17/s1757135/Spectral-Parser/spectral_parser'
-train_file = prefix+'/data/train.txt'
+train_file = prefix+'/data/cleaned.train.txt'
 dev_file = prefix+'/data/dev1.txt'
 test_file = prefix+'/data/test.txt'
 output_dir = prefix+'/output/'
@@ -17,7 +17,7 @@ if not os.path.exists(cache):
 import torch
 
 max_state = 16
-cutoff = 0.01
+cutoff = 0
 C = 10
 S = None
 lpcfg_optimize = None

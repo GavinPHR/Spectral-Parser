@@ -3,7 +3,6 @@ export LD_LIBRARY_PATH=~/venv/lib
 """
 import config
 config.load()
-import config
 from nltk.tree import Tree
 from tqdm import tqdm
 from numba import njit
