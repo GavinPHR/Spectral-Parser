@@ -18,6 +18,8 @@ import torch
 
 max_state = 16
 C = 10
+S = None
+lpcfg_optimize = None
 embedding_map = None
 terminal_cutoff = 5
 train = None

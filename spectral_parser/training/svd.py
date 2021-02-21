@@ -3,7 +3,7 @@ import numpy as np
 from tqdm import tqdm
 import config
 
-
+config.S = dict()
 I, O = config.I, config.O
 info = []
 for nt, count in tqdm(config.pcfg.nonterminals.items(), desc='Doing SVDs'):
@@ -15,6 +15,7 @@ for nt, count in tqdm(config.pcfg.nonterminals.items(), desc='Doing SVDs'):
         i += 1
     idx = idx[:i]
     info.append((config.nonterminal_map[nt], i))
+    config.S[nt] = s[idx]
     s = np.reciprocal(s[idx]).reshape(-1, 1)
     I[nt] = I[nt].dot(u[:, idx])
     O[nt] = O[nt].dot((s*vt[idx]).T)

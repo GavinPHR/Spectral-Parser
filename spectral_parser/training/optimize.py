@@ -2,10 +2,19 @@ import numpy as np
 import config
 from math import sqrt
 from training.lpcfg_smoothed import LPCFG_Smoothed
-from training.optimize.lpcfg_surrogate import LPCFG_Surrogate
+
+
+class LPCFG_Surrogate:
+    def __init__(self):
+        self.rule1s = dict()
+        self.rule3s = dict()
+        self.pi = dict()
 
 
 class LPCFG_Optimize(LPCFG_Smoothed):
+
+    def __init__(self):
+        super(LPCFG_Optimize, self).__init__(optimize=True)
 
     def smooth(self, L, C):
         pcfg = config.pcfg
@@ -21,27 +30,18 @@ class LPCFG_Optimize(LPCFG_Smoothed):
             k = lambda_ * e3 + (1 - lambda_) * e4
             e = lambda_ * e1 + (1 - lambda_) * (lambda_ * e2 + (1 - lambda_) * k)
             config.lpcfg.rule3s[rule] = pcfg.rule3s[rule] * e
-        for rule, count in pcfg.rule2s_count.items():
-            e1 = self.Eij[rule][:L[rule.a], :L[rule.b]]
-            ei, ej = self.Ei[rule][:L[rule.a]], self.Ej[rule][:L[rule.b]]
-            e2 = np.einsum('i,j->ij', ei, ej)
-            hi, fj = self.H[rule.a][:L[rule.a]], self.F[rule.b][:L[rule.b]]
-            e3 = np.einsum('i,j->ij', hi, fj)
-            lambda_ = sqrt(count) / (C + sqrt(count))
-            e = lambda_ * e1 + (1 - lambda_) * (lambda_ * e2 + (1 - lambda_) * e3)
-            config.lpcfg.rule2s[rule] = pcfg.rule2s[rule] * e
         for rule, count in pcfg.rule1s_count.items():
             config.lpcfg.rule1s[rule] = pcfg.rule1s[rule] * self.Eax[rule][:L[rule.a]]
         config.lpcfg.pi = self.pi
 
     @staticmethod
-    def get_length(incutoff, instates, precutoff, prestates):
+    def get_length(cutoff, instates, prestates):
         L = dict()
         for nt in config.pcfg.nonterminals:
             if nt in config.pcfg.preterminals:
-                cutoff, states = precutoff, prestates
+                states = prestates
             else:
-                cutoff, states = incutoff, instates
+                states = instates
             s = config.S[nt]
             i = 1
             while i < len(s) and s[i] > cutoff and i < states:
@@ -50,10 +50,10 @@ class LPCFG_Optimize(LPCFG_Smoothed):
         return L
 
 
-    def opt(self, incutoff, instates, precutoff, prestates, C):
+    def opt(self, cutoff, instates, prestates, C):
         instates, prestates = int(instates), int(prestates)
         config.lpcfg = LPCFG_Surrogate()
-        self.smooth(self.get_length(incutoff, instates, precutoff, prestates), C)
+        self.smooth(self.get_length(cutoff, instates, prestates), C)
         config.save()
 
         from parsing import parser
@@ -68,7 +68,7 @@ class LPCFG_Optimize(LPCFG_Smoothed):
         subprocess.Popen(['cd', 'parsing'])
         subprocess.Popen(['python3', 'parser.py'])
         subprocess.Popen(['cd', '..'])
-        process = subprocess.Popen(['./evalb', '-p', 'new.prm', config.dev_file, 'output/baseline_parse.txt'],
+        process = subprocess.Popen(['./evalb', '-p', 'new.prm', config.dev_file, 'output/parse.txt'],
                                    stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE)
         stdout, stderr = process.communicate()
