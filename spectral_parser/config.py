@@ -1,45 +1,62 @@
+"""
+Global config file.
+This file is imported in almost every other file.
+"""
+import os
 
+import torch  # Should remove torch dependency in the future
 
 __author__ = 'Haoran Peng'
 __email__ = 'gavinsweden@gmail.com'
 __license__ = 'MIT'
 
 
+"""
+File paths and output directory
+"""
 prefix = '/Users/phr/Desktop/Spectral-Parser/spectral_parser'
 # prefix = '/afs/inf.ed.ac.uk/user/s17/s1757135/Spectral-Parser/spectral_parser'
-train_file = prefix+'/data/train.txt'
-test_file = prefix+'/data/dev1.txt'
-output_dir = prefix+'/output/'
-cache = prefix+'/output/cache/'
+train_file = prefix + '/data/train.txt'
+test_file = prefix + '/data/dev1.txt'
+output_dir = prefix + '/output/'
+cache = prefix + '/output/cache/'
 
-import os
+# Create the output/cache directories
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
     print('Output directory created.')
-
 if not os.path.exists(cache):
     os.makedirs(cache)
     print('Cache directory created.')
-import torch
 
+"""
+Hyperparameters
+"""
+prestates = 16       # Number of latent states for preterminals
+instates = 13        # Number of latent states for interminals
+C = 12.2             # Smoothing parameter
+terminal_cutoff = 5  # Word below this frequency are replaced by UNKs
+prune_cutoff = 1e-5  # Marginals less than this threshold are pruned
+
+# Number of CPUs to use for multi-processing
 CPUs = os.cpu_count()
-prestates = 16
-instates = 13
-C = 12.2
-S = None
-lpcfg_optimize = None
-embedding_map = None
-terminal_cutoff = 5
+# Whether to cache prune charts, useful when tuning.
+cache_prune_charts = True
+
+"""
+The varaibles below should not be manually set.
+They are here to prevent lint.
+"""
 train = None
 nonterminal_map = None
 terminal_map = None
 pcfg = None
-lpcfg= None
 I, O = None, None
+S = None
+lpcfg= None
+lpcfg_optimize = None
 rule3s_lookupC = None
 rule1s_lookup = None
-cache_prune_charts = True
-prune_cutoff = 1e-5
 numba_ready = False
 rule3s = None
 rule1s = None
