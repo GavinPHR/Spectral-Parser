@@ -1,13 +1,17 @@
+"""
+Construct LPCFG parameters, as described in section 3.2.6 in my dissertation.
+Normally the smoothed version of this script (lpcfg_smoothed) is used.
+"""
+from collections import Counter
+
+import config
 import numpy as np
 from tqdm import tqdm
-from collections import Counter
-import config
-from training.rule import Rule3, Rule2, Rule1
+from training.rule import Rule3, Rule1
 
 __author__ = 'Haoran Peng'
 __email__ = 'gavinsweden@gmail.com'
 __license__ = 'MIT'
-
 
 
 class LPCFG:

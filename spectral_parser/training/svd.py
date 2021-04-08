@@ -1,7 +1,10 @@
+"""
+SVD + Projections as described in section 3.2.5 and 4.3 in my dissertation.
+"""
+import config
 from scipy.sparse.linalg import svds
 import numpy as np
 from tqdm import tqdm
-import config
 
 __author__ = 'Haoran Peng'
 __email__ = 'gavinsweden@gmail.com'

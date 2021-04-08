@@ -1,3 +1,7 @@
+"""
+Feature extracted are as described in section 5.2 in my dissertation.
+The procedure is outlined in section 4.2 in my dissertation.
+"""
 from collections import Counter, defaultdict
 from math import sqrt
 
@@ -32,7 +36,6 @@ def inside(node):
     if len(node) == 1:
         res.append(node.label() + ' ' + node[0].lower())
     else:
-        # res.append(node.label() + ' (' + node[0].label() + ' ' + node[1].label() + ')')
         if len(node[0]) == 1:
             l = node[0].label() + ' ' + node[0][0].lower()
         else:

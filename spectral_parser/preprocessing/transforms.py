@@ -1,6 +1,9 @@
+"""
+Functions for transforming the labels in trees
+from strings to integers, and vice versa.
+"""
 from tqdm import tqdm
 import config
-from nltk.tree import Tree
 from preprocessing.unk import signature
 
 __author__ = 'Haoran Peng'
@@ -10,7 +13,7 @@ __license__ = 'MIT'
 
 def transform_trees(trees):
     """
-    Transform config.trees to int/str labels.
+    Transform trees to int labels.
     """
     nmap = config.nonterminal_map
     tmap = config.terminal_map
@@ -18,14 +21,14 @@ def transform_trees(trees):
         i = 0
         for node in tree.postorder():
             if isinstance(node[0], str):
+                # Replace the word by an UNK as described in
+                # Chapter 6 of my dissertation
                 if node[0] not in tmap:
-                    # replace with its POS tag
-                    # tag = node.raw_label()
                     tag = signature(node[0], i, node[0].lower() in tmap)
                     if tag in tmap:
                         node[0] = tmap[tag]
                     else:
-                        tmap.update_POS(tag)
+                        tmap.update_UNK(tag)
                         node[0] = tmap[tag]
                 else:
                     node[0] = tmap[node[0]]

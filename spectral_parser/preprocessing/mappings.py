@@ -1,5 +1,13 @@
-from tqdm import tqdm
+"""
+Nonterminal and terminal mappings as described in section
+3.2.1 in my dissertation.
+
+These data structures are two-way mappings:
+you can index from integers to strings and vice versa.
+"""
 import collections
+
+from tqdm import tqdm
 import config
 
 __author__ = 'Haoran Peng'
@@ -8,9 +16,7 @@ __license__ = 'MIT'
 
 
 class NonterminalMap:
-    """
-    Encapsulation of a two-way mapping between strings and ints.
-    """
+
     def __init__(self, trees):
         self.nonterm2int = dict()
         self.int2nonterm = dict()
@@ -46,9 +52,7 @@ class NonterminalMap:
 
 
 class TerminalMap:
-    """
-    Encapsulation of a two-way mapping between strings and ints.
-    """
+
     def __init__(self, trees, start_index):
         self.term2int = dict()
         self.int2term = dict()
@@ -66,11 +70,11 @@ class TerminalMap:
             self.int2term[self.acc] = term
             self.acc += 1
 
-    def update_POS(self, POS):
-        assert (type(POS) == str)
-        if POS not in self.term2int:
-            self.term2int[POS] = self.acc
-            self.int2term[self.acc] = POS
+    def update_UNK(self, UNK):
+        assert (type(UNK) == str)
+        if UNK not in self.term2int:
+            self.term2int[UNK] = self.acc
+            self.int2term[self.acc] = UNK
             self.acc += 1
 
     def __getitem__(self, item):

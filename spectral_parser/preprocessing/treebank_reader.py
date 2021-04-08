@@ -1,6 +1,14 @@
+"""
+Function to read in parse trees and putting them in
+parented tree structure for easier feature extraction.
+
+If you are using the PTB WSJ dataset, make sure it is
+sanitized, this script only binarize and markovize the trees.
+
+You need to rewrite this file if other datasets are used.
+"""
 from tqdm import tqdm
 from nltk.tree import ParentedTree, Tree
-import config
 
 __author__ = 'Haoran Peng'
 __email__ = 'gavinsweden@gmail.com'
@@ -10,20 +18,14 @@ __license__ = 'MIT'
 class ParentedNormalTree(ParentedTree):
 
     def raw_label(self):
+        """
+        Returns the label of a node without any
+        parent/sibling annotations.
+        """
         label = self.label()
         i = label.rfind('+')
         if i != -1:
             return label[i + 1:]
-        i = label.find('|')
-        if i != -1:
-            return label[:i + 2] + '>'
-        i = label.find('^')
-        if i != -1:
-            return label[:i]
-        return label
-
-    def raw_label2(self):
-        label = self.label()
         i = label.find('|')
         if i != -1:
             return label[:i + 2] + '>'
@@ -63,6 +65,11 @@ def lower(tree):
             node[0] = node[0].lower()
 
 def vmarkov(tree):
+    """
+    Vertical markovization, slightly complicated as
+    we want a (h=1, v<1) Markovization.
+    See Chapter 5 of my dissertation.
+    """
     stack = [(tree, None)]
     while stack:
         node, parent = stack.pop()

@@ -1,3 +1,6 @@
+"""
+Experimental file for grid optimization
+"""
 import config
 from preprocessing import mappings, transforms, treebank_reader
 from training import pcfg, optimize
@@ -29,6 +32,5 @@ for p in prestates:
         score = config.lpcfg_optimize.opt(0, i, p, config.C)
         print('P=%d I=%d S=%.2f' % (p, i, score))
         f.write('P=%d I=%d S=%.2f\n' % (p, i, score))
-
 
 f.close()

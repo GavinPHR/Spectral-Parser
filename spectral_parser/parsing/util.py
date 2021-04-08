@@ -1,3 +1,6 @@
+"""
+Useful functions for hashing rules and computing inside/outside.
+"""
 from numba import njit, int64
 from numba.core.types import UniTuple
 import numpy as np

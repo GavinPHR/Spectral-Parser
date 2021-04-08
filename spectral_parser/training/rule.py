@@ -1,9 +1,12 @@
+"""
+Encapsulate rules in a single 64-bit integer.
+See section 3.2.2 in my dissertation.
+"""
 import config
 
 __author__ = 'Haoran Peng'
 __email__ = 'gavinsweden@gmail.com'
 __license__ = 'MIT'
-
 
 
 def hash_forward(a, b, c):

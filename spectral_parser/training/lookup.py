@@ -1,4 +1,8 @@
+"""
+Reverse lookup for parsing.
+"""
 from collections import defaultdict
+
 import config
 
 __author__ = 'Haoran Peng'

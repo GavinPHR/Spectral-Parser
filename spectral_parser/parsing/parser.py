@@ -1,19 +1,26 @@
 """
-export LD_LIBRARY_PATH=~/venv/lib
+Parsing main script.
+Code clarity is not great because I needed to fit everything
+into the subset of Python that Numba supports.
+
+If you are using virtual environment, you might need to run:
+export LD_LIBRARY_PATH=[ENV_PATH]/lib
+where [ENV_PATH] is ~/venv in my case.
 """
 import config
 config.load()
+
+import os
+import multiprocessing as mp
+import pickle
+
 from nltk.tree import Tree
 from tqdm import tqdm
 from numba import njit
 from numba.typed import List
 from parsing.baseline import prune, get_parse_chart, make_chart
-import os
-import multiprocessing as mp
 from parsing.contrained import constrained
-import pickle
 from preprocessing.unk import signature
-from datetime import datetime
 
 __author__ = 'Haoran Peng'
 __email__ = 'gavinsweden@gmail.com'
@@ -77,7 +84,6 @@ def deserialize(terminals):
     return chart
 import os.path
 
-# @njit
 def get_charts(terminals, r3_p, r1_p, pi_p, r3_lookupC, r1_lookup, prune_cutoff, r3_f, r1_f, pi_f):
     if config.cache_prune_charts:
         fname = str(hash(tuple(terminals)))
@@ -126,7 +132,7 @@ def prepare_args(sent):
     terminals = []
     for i, word in enumerate(sent):
         if word not in config.terminal_map.term2int:
-            # Fall back to POS tag
+            # Fall back to UNK
             POS = signature(word, i, word.lower() in config.terminal_map.term2int)
             if POS not in config.terminal_map.term2int:
                 terminals.append(config.terminal_map['UNK'])
@@ -145,11 +151,8 @@ def parse_devset(dev_file):
             tree = Tree.fromstring(line)
             sents.append(tree.leaves())
     args = list(map(prepare_args, sents))
-    cpu = os.cpu_count()
-    # now = datetime.now().strftime("-%M-%H-%d-%m")
-    now = ''
-    with open(config.output_dir + 'parse' + now + '.txt', 'w') as f:
-        with mp.Pool(cpu-2) as pool:
+    with open(config.output_dir + 'parse' + '.txt', 'w') as f:
+        with mp.Pool(config.CPUs - 2) as pool:
             for i, tree_str in enumerate(tqdm(pool.imap(process_wrapper, args, chunksize=len(sents)//(cpu)), total=len(sents))):
                 if tree_str == '()':
                     f.write('()\n')

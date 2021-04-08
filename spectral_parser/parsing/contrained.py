@@ -1,9 +1,15 @@
+"""
+Latent pass using L-PCFG.
+The inside-outside algorithm for L-PCFG is
+stated in section 7.3 and 7.4 of my dissertation.
+"""
+import warnings
+
 from numba.core import types
 from numba.typed import Dict, List
 from numba import njit
-from parsing.util import hash_forward, hash_backward, Tij, Tik, Tjk
+from parsing.util import hash_backward, Tij, Tik, Tjk
 import numpy as np
-import warnings
 
 __author__ = 'Haoran Peng'
 __email__ = 'gavinsweden@gmail.com'
@@ -11,7 +17,6 @@ __license__ = 'MIT'
 
 
 warnings.simplefilter('ignore')
-
 
 @njit
 def fill_inside_base(inside, terminals, N, r1, r1_lookup, constrains):
@@ -232,4 +237,3 @@ def constrained(terminals, r3, r1, pi, r3_lookupC, r1_lookup, constrains):
     fill_outside(outside, inside, N, r3, r3_lookupC)
     fill_marginal(marginal, inside, outside, N)
     return marginal
-    # return get_parse_chart(marginal, N, r3_lookupC)

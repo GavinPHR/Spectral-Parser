@@ -1,3 +1,7 @@
+"""
+Loading all the saved parameters and cast
+them into Numba compatible types.
+"""
 import config
 from numba.core import types
 from numba.typed import Dict

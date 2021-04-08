@@ -1,10 +1,15 @@
+"""
+Construct smoothed LPCFG parameters,
+as described in section 3.2.6 and 3.2.7 in my dissertation.
+"""
+from math import sqrt
+from collections import Counter
+from copy import deepcopy
+
+import config
 import numpy as np
 from tqdm import tqdm
-from collections import Counter
-import config
 from training.rule import Rule3, Rule1
-from math import sqrt
-from copy import deepcopy
 
 __author__ = 'Haoran Peng'
 __email__ = 'gavinsweden@gmail.com'
@@ -137,4 +142,3 @@ class LPCFG_Smoothed:
             self.rule3s[rule] = pcfg.rule3s[rule] * e
         for rule, count in pcfg.rule1s_count.items():
             self.rule1s[rule] = pcfg.rule1s[rule] * self.Eax[rule]
-

@@ -1,8 +1,12 @@
+"""
+Object encapsulating a PCFG, parameters estimated using MLE.
+This grammar is used to prune when parsing.
+"""
 from collections import Counter
+
 import config
-from training.rule import Rule3, Rule2, Rule1
+from training.rule import Rule3, Rule1
 from tqdm import tqdm
-from nltk.tree import Tree
 
 __author__ = 'Haoran Peng'
 __email__ = 'gavinsweden@gmail.com'
@@ -22,7 +26,6 @@ class PCFG:
         self.rule3s = dict()
         self.populate()
         self.normalize_rules()
-
 
     def populate(self):
         for tree in tqdm(config.train, desc='Doing vanilla PCFG'):

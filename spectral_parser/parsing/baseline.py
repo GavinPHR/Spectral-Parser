@@ -1,13 +1,15 @@
+"""
+Pruning pass using PCFG.
+The inside-outside algorithm is stated in section 7.3 of my dissertation.
+"""
 from numba.core import types
 from numba.typed import Dict, List
 from numba import njit
-from parsing.util import hash_backward, hash_forward
-import config
+from parsing.util import hash_backward
 
 __author__ = 'Haoran Peng'
 __email__ = 'gavinsweden@gmail.com'
 __license__ = 'MIT'
-
 
 
 @njit
@@ -46,7 +48,6 @@ def fill_outside_base(outside, inside, N, pi):
             continue
         outside[0][N-1][nonterm] = prob
 
-# @njit(parallel=True,
 @njit
 def fill_outside(outside, inside, N, r3, r3_lookupC):
     for length in range(N - 1, 0, -1):
@@ -89,7 +90,6 @@ def fill_outside(outside, inside, N, r3, r3_lookupC):
                         else:
                             outside[i][j][b] += res
 
-# @njit(parallel=True,
 @njit
 def fill_marginal(marginal, inside, outside, prune_cutoff, N):
     tree_score = 0

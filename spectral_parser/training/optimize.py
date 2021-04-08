@@ -1,12 +1,16 @@
-import numpy as np
-import config
+"""
+Use this instead of lpcfg_smoothed.py for optimization.
+See Chapter 9 of my dissertation.
+"""
 from math import sqrt
+
+import config
+import numpy as np
 from training.lpcfg_smoothed import LPCFG_Smoothed
 
 __author__ = 'Haoran Peng'
 __email__ = 'gavinsweden@gmail.com'
 __license__ = 'MIT'
-
 
 
 class LPCFG_Surrogate:
@@ -68,13 +72,13 @@ class LPCFG_Optimize(LPCFG_Smoothed):
             mp.set_start_method('fork')
         except RuntimeError:
             pass
-        parser.parse_devset(config.dev_file)
+        parser.parse_devset(config.test_file)
 
         import subprocess
         subprocess.Popen(['cd', 'parsing'])
         subprocess.Popen(['python3', 'parser.py'])
         subprocess.Popen(['cd', '..'])
-        process = subprocess.Popen(['./evalb', '-p', 'new.prm', config.dev_file, 'output/parse.txt'],
+        process = subprocess.Popen(['./evalb', '-p', 'new.prm', config.test_file, 'output/parse.txt'],
                                    stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE)
         stdout, stderr = process.communicate()

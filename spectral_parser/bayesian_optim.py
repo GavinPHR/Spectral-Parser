@@ -1,3 +1,6 @@
+"""
+Experimental file for Bayesian optimization
+"""
 import config
 from preprocessing import mappings, transforms, treebank_reader
 from training import pcfg, optimize
