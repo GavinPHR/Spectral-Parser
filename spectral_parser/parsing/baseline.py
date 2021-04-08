@@ -4,6 +4,11 @@ from numba import njit
 from parsing.util import hash_backward, hash_forward
 import config
 
+__author__ = 'Haoran Peng'
+__email__ = 'gavinsweden@gmail.com'
+__license__ = 'MIT'
+
+
 
 @njit
 def fill_inside_base(inside, terminals, N, r1, r1_lookup):

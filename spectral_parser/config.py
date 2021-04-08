@@ -1,3 +1,10 @@
+
+
+__author__ = 'Haoran Peng'
+__email__ = 'gavinsweden@gmail.com'
+__license__ = 'MIT'
+
+
 prefix = '/Users/phr/Desktop/Spectral-Parser/spectral_parser'
 # prefix = '/afs/inf.ed.ac.uk/user/s17/s1757135/Spectral-Parser/spectral_parser'
 train_file = prefix+'/data/train.txt'

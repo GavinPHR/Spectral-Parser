@@ -2,6 +2,11 @@ import config
 from preprocessing import mappings, transforms, treebank_reader
 from training import pcfg, optimize
 
+__author__ = 'Haoran Peng'
+__email__ = 'gavinsweden@gmail.com'
+__license__ = 'MIT'
+
+
 config.prestates = 18
 config.instates = 18
 config.train = treebank_reader.read(config.train_file)

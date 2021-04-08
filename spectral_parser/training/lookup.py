@@ -1,6 +1,11 @@
 from collections import defaultdict
 import config
 
+__author__ = 'Haoran Peng'
+__email__ = 'gavinsweden@gmail.com'
+__license__ = 'MIT'
+
+
 pcfg = config.pcfg
 
 rule3s_lookupC = defaultdict(list)

@@ -3,6 +3,11 @@ import config
 from math import sqrt
 from training.lpcfg_smoothed import LPCFG_Smoothed
 
+__author__ = 'Haoran Peng'
+__email__ = 'gavinsweden@gmail.com'
+__license__ = 'MIT'
+
+
 
 class LPCFG_Surrogate:
     def __init__(self):

@@ -1,14 +1,7 @@
 """
-Port of Berkeley parsers unknown word tools
-
-Taken from the 2009-12-17 version of Slav Petrov's
-edu.berkeley.nlp.PCFGLG.SophisticatedLexicon.java of the BerkeleyParser
-(downloaded from http://code.google.com/p/berkeleyparser)
-
-WARNINGS:
- - Has not been regression-tested against the original.
- - Only implements unknown level 5
-
+Taken from Tim Vieira
+https://github.com/timvieira/learning-to-prune/blob/5745c1a1caff1d4a366c437cf7ee5037508d3428/ldp/parsing/unk.py
+which is in turn adpated from BerkeleyParser
 """
 
 def signature(word, loc, lowercase_known):

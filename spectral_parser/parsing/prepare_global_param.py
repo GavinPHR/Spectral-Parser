@@ -4,6 +4,11 @@ from numba.typed import Dict
 import numpy as np
 import numba
 
+__author__ = 'Haoran Peng'
+__email__ = 'gavinsweden@gmail.com'
+__license__ = 'MIT'
+
+
 numba.config.THREADING_LAYER = 'safe'
 
 def to_typed_dict_rule_tensor(untyped_d, dimension, pi=False):

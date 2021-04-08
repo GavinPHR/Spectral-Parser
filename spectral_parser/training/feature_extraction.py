@@ -7,6 +7,11 @@ from tqdm import tqdm
 import numpy as np
 from scipy.sparse import dok_matrix
 
+__author__ = 'Haoran Peng'
+__email__ = 'gavinsweden@gmail.com'
+__license__ = 'MIT'
+
+
 inverse_transform_trees(config.train)
 
 def outside(node, child, level=3):

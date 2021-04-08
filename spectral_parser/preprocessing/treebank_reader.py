@@ -2,6 +2,11 @@ from tqdm import tqdm
 from nltk.tree import ParentedTree, Tree
 import config
 
+__author__ = 'Haoran Peng'
+__email__ = 'gavinsweden@gmail.com'
+__license__ = 'MIT'
+
+
 class ParentedNormalTree(ParentedTree):
 
     def raw_label(self):

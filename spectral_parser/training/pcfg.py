@@ -4,6 +4,11 @@ from training.rule import Rule3, Rule2, Rule1
 from tqdm import tqdm
 from nltk.tree import Tree
 
+__author__ = 'Haoran Peng'
+__email__ = 'gavinsweden@gmail.com'
+__license__ = 'MIT'
+
+
 class PCFG:
     def __init__(self):
         self.nonterminals = Counter()

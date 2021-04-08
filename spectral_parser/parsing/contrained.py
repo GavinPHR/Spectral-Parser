@@ -5,6 +5,11 @@ from parsing.util import hash_forward, hash_backward, Tij, Tik, Tjk
 import numpy as np
 import warnings
 
+__author__ = 'Haoran Peng'
+__email__ = 'gavinsweden@gmail.com'
+__license__ = 'MIT'
+
+
 warnings.simplefilter('ignore')
 
 

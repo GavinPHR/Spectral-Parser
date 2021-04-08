@@ -15,6 +15,11 @@ import pickle
 from preprocessing.unk import signature
 from datetime import datetime
 
+__author__ = 'Haoran Peng'
+__email__ = 'gavinsweden@gmail.com'
+__license__ = 'MIT'
+
+
 def transform_int2str(tree, sent, i=0):
     tree.set_label(config.nonterminal_map[int(tree.label())])
     if len(tree) == 1 and not isinstance(tree[0], Tree):

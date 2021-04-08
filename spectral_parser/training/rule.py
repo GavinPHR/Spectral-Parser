@@ -1,5 +1,10 @@
 import config
 
+__author__ = 'Haoran Peng'
+__email__ = 'gavinsweden@gmail.com'
+__license__ = 'MIT'
+
+
 
 def hash_forward(a, b, c):
     """

@@ -2,6 +2,10 @@ from numba import njit, int64
 from numba.core.types import UniTuple
 import numpy as np
 
+__author__ = 'Haoran Peng'
+__email__ = 'gavinsweden@gmail.com'
+__license__ = 'MIT'
+
 
 @njit(int64(int64, int64, int64))
 def hash_forward(a, b, c):

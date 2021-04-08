@@ -6,6 +6,11 @@ from training.rule import Rule3, Rule1
 from math import sqrt
 from copy import deepcopy
 
+__author__ = 'Haoran Peng'
+__email__ = 'gavinsweden@gmail.com'
+__license__ = 'MIT'
+
+
 class LPCFG_Smoothed:
     def __init__(self, optimize=False):
         self.rule1s = dict()

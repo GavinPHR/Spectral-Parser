@@ -3,6 +3,11 @@ import numpy as np
 from tqdm import tqdm
 import config
 
+__author__ = 'Haoran Peng'
+__email__ = 'gavinsweden@gmail.com'
+__license__ = 'MIT'
+
+
 config.S = dict()
 I, O = config.I, config.O
 info = []

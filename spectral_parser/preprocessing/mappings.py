@@ -2,6 +2,11 @@ from tqdm import tqdm
 import collections
 import config
 
+__author__ = 'Haoran Peng'
+__email__ = 'gavinsweden@gmail.com'
+__license__ = 'MIT'
+
+
 class NonterminalMap:
     """
     Encapsulation of a two-way mapping between strings and ints.

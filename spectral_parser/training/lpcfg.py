@@ -4,6 +4,11 @@ from collections import Counter
 import config
 from training.rule import Rule3, Rule2, Rule1
 
+__author__ = 'Haoran Peng'
+__email__ = 'gavinsweden@gmail.com'
+__license__ = 'MIT'
+
+
 
 class LPCFG:
     def __init__(self):

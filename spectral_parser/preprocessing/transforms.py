@@ -3,6 +3,11 @@ import config
 from nltk.tree import Tree
 from preprocessing.unk import signature
 
+__author__ = 'Haoran Peng'
+__email__ = 'gavinsweden@gmail.com'
+__license__ = 'MIT'
+
+
 def transform_trees(trees):
     """
     Transform config.trees to int/str labels.
