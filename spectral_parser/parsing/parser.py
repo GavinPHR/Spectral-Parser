@@ -151,8 +151,9 @@ def parse_devset(dev_file):
             tree = Tree.fromstring(line)
             sents.append(tree.leaves())
     args = list(map(prepare_args, sents))
+    cpu = config.CPUs
     with open(config.output_dir + 'parse' + '.txt', 'w') as f:
-        with mp.Pool(config.CPUs - 2) as pool:
+        with mp.Pool(cpu - 2) as pool:
             for i, tree_str in enumerate(tqdm(pool.imap(process_wrapper, args, chunksize=len(sents)//(cpu)), total=len(sents))):
                 if tree_str == '()':
                     f.write('()\n')
