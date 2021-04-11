@@ -3,8 +3,7 @@ Global config file.
 This file is imported in almost every other file.
 """
 import os
-
-import torch  # Should remove torch dependency in the future
+import pickle
 
 __author__ = 'Haoran Peng'
 __email__ = 'gavinsweden@gmail.com'
@@ -15,7 +14,6 @@ __license__ = 'MIT'
 File paths and output directory
 """
 prefix = '/Users/phr/Desktop/Spectral-Parser/spectral_parser'
-# prefix = '/afs/inf.ed.ac.uk/user/s17/s1757135/Spectral-Parser/spectral_parser'
 train_file = prefix + '/data/train.txt'
 test_file = prefix + '/data/dev1.txt'
 output_dir = prefix + '/output/'
@@ -62,23 +60,32 @@ rule3s = None
 rule1s = None
 pi = None
 
+def _save(obj, fname):
+    with open(output_dir + fname, 'wb') as f:
+        pickle.dump(obj, f)
+
+def _load(fname):
+    with open(output_dir + fname, 'rb') as f:
+        obj = pickle.load(f)
+    return obj
+
 def save():
     print('Saving parameters.')
-    torch.save(nonterminal_map, output_dir+'nonterminal_map.pt')
-    torch.save(terminal_map, output_dir + 'terminal_map.pt')
-    torch.save(pcfg, output_dir + 'pcfg.pt')
-    torch.save(lpcfg, output_dir + 'lpcfg.pt')
-    torch.save(rule3s_lookupC, output_dir + 'rule3s_lookupC.pt')
-    torch.save(rule1s_lookup, output_dir + 'rule1s_lookup.pt')
+    _save(nonterminal_map, 'nonterminal_map.p')
+    _save(terminal_map, 'terminal_map.p')
+    _save(pcfg, 'pcfg.p')
+    _save(lpcfg, 'lpcfg.p')
+    _save(rule3s_lookupC, 'rule3s_lookupC.p')
+    _save(rule1s_lookup, 'rule1s_lookup.p')
     print('Done!')
 
 def load():
     global nonterminal_map, terminal_map
     global pcfg, lpcfg
     global rule3s_lookupC, rule1s_lookup
-    nonterminal_map = torch.load(output_dir+'nonterminal_map.pt')
-    terminal_map = torch.load(output_dir+'terminal_map.pt')
-    pcfg = torch.load(output_dir+'pcfg.pt')
-    lpcfg = torch.load(output_dir + 'lpcfg.pt')
-    rule3s_lookupC = torch.load(output_dir+'rule3s_lookupC.pt')
-    rule1s_lookup = torch.load(output_dir+'rule1s_lookup.pt')
+    nonterminal_map = _load('nonterminal_map.p')
+    terminal_map = _load('terminal_map.p')
+    pcfg = _load('pcfg.p')
+    lpcfg = _load('lpcfg.p')
+    rule3s_lookupC = _load('rule3s_lookupC.p')
+    rule1s_lookup = _load('rule1s_lookup.p')
